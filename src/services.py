@@ -46,7 +46,7 @@ class SMSService:
     ) -> str:
         contact_id = None
 
-        if recipient.isdigit() and len(recipient < 8):
+        if recipient.isdigit() and len(recipient) < 8:
             contact = self.contact_repo.get(int(recipient))
             if not contact:
                 raise ValueError(f"Contact ID {recipient} not found.")

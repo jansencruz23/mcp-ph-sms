@@ -4,8 +4,8 @@ from .config import get_settings
 
 
 settings = get_settings()
-db_file_path = settings.DB_PATH.replace("sqlite://", "")
-os.makedirs(os.path.dirname(db_file_path), exist_ok=True)
+db_file_path = settings.DB_PATH.replace("sqlite:///", "")
+os.makedirs(os.path.dirname(os.path.abspath(db_file_path)), exist_ok=True)
 
 engine = create_engine(settings.DB_PATH)
 

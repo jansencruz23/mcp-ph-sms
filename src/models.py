@@ -7,18 +7,18 @@ class Contact(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     phone: str = Field(unique=True, index=True)
-    _tags: str = Field(default="", sa_column_kwargs={"name": "tags"})
+    tags: str = Field(default="", sa_column_kwargs={"name": "tags"})
     notes: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     @property
     def tags_list(self) -> List[str]:
-        return [t for t in self._tags.split(",") if t] if self._tags else []
+        return [t for t in self.tags.split(",") if t] if self.tags else []
 
     @tags_list.setter
     def tags_list(self, value: List[str]):
-        self._tags = ",".join(value) if value else ""
+        self.tags = ",".join(value) if value else ""
 
 
 class SMSLog(SQLModel, table=True):

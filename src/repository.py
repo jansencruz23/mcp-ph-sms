@@ -28,7 +28,7 @@ class ContactRepository:
         with Session(engine) as session:
             statement = select(Contact)
             if tag:
-                statement = statement.where(col(Contact._tags).contains(tag))
+                statement = statement.where(col(Contact.tags).contains(tag))
             if q:
                 statement = statement.where(
                     (col(Contact.name).contains(q)) | (col(Contact.phone).contains(q))
