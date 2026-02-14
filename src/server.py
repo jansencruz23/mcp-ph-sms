@@ -15,7 +15,7 @@ sms_repo = SMSRepository()
 
 
 @mcp.tool()
-def contacts_list(limit: int = 50, tag: str = None, q: str = None):
+def contacts_list(limit: int = 50, tag: str | None = None, q: str | None = None):
     """List contacts with regex-like filtering."""
     contacts = contact_repo.list(limit, tag, q)
     return contacts
@@ -28,19 +28,23 @@ def contacts_get(contact_id: int):
 
 
 @mcp.tool()
-def contacts_create(name: str, phone: str, tags: list[str] = [], notes: str = None):
+def contacts_create(
+    name: str, phone: str, tags: list[str] | None = [], notes: str | None = None
+):
     """Create a contact."""
     norm_phone = normalize_phone(phone)
-    return contact_repo.create(name, norm_phone, tags, notes)
+    # Ensure tags is a list if None passed
+    safe_tags = tags if tags is not None else []
+    return contact_repo.create(name, norm_phone, safe_tags, notes)
 
 
 @mcp.tool()
 def contacts_update(
     contact_id: int,
-    name: str = None,
-    phone: str = None,
-    tags: list[str] = None,
-    notes: str = None,
+    name: str | None = None,
+    phone: str | None = None,
+    tags: list[str] | None = None,
+    notes: str | None = None,
 ):
     """Update contact."""
     updates = {}
@@ -68,7 +72,7 @@ async def sms_send(recipient: str, message: str, dry_run: bool = False):
 
 
 @mcp.tool()
-def sms_history(limit: int = 20, contact_id: int = None):
+def sms_history(limit: int = 20, contact_id: int | None = None):
     """View SMS history."""
     return sms_repo.list(limit, contact_id)
 

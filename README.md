@@ -4,10 +4,12 @@ A Model Context Protocol (MCP) server that provides SMS capabilities (via a free
 
 ## Setup
 
-1.  **Prerequisites**: Python 3.10+
+1.  **Prerequisites**: Python 3.10+, [uv](https://docs.astral.sh/uv/)
 2.  **Install Dependencies**:
     ```bash
-    pip install mcp[cli] httpx pydantic pydantic-settings python-dotenv sqlmodel
+    uv sync
+    # OR if managing manually:
+    uv pip install mcp[cli] httpx pydantic pydantic-settings python-dotenv sqlmodel
     ```
 3.  **Configure Environment**:
     Create a `.env` file in the root directory:
@@ -23,21 +25,21 @@ A Model Context Protocol (MCP) server that provides SMS capabilities (via a free
 ### 1. Manual Testing (Script)
 To verify the database and API logic without the full MCP server:
 ```bash
-python test_manual.py
+uv run test_manual.py
 ```
 This will create a test contact and attempt a dry-run SMS send.
 
 ### 2. Run via CLI (MCP)
 To start the standard IO server (mainly for debugging or piping):
 ```bash
-python main.py
+uv run main.py
 ```
 *Note: This will appear to hang as it waits for JSON-RPC input.*
 
 ### 3. Run with MCP Inspector (Web UI)
 If you have `npx` installed:
 ```bash
-npx @modelcontextprotocol/inspector python main.py
+npx @modelcontextprotocol/inspector uv run main.py
 ```
 
 ## Integration with Claude Desktop
@@ -51,8 +53,18 @@ To use this server with Claude Desktop, add the following to your config file:
 {
   "mcpServers": {
     "sms-ph": {
-      "command": "python",
-      "args": ["d:/User/Jansen/Self Study/2026 - 02 - FEBRUARY/mcp-ph-sms/main.py"],
+      "command": "uv",
+      "args": [
+        "run",
+        "--with", "mcp[cli]",
+        "--with", "httpx",
+        "--with", "pydantic",
+        "--with", "pydantic-settings",
+        "--with", "python-dotenv",
+        "--with", "sqlmodel",
+        "d:/User/path-to-your-mcp/mcp-ph-sms/main.py"
+      ],
+      "cwd": "d:/User/path-to-your-mcp/mcp-ph-sms",
       "env": {
         "SMS_API_KEY": "your_key_here"
       }
@@ -61,10 +73,29 @@ To use this server with Claude Desktop, add the following to your config file:
 }
 ```
 
-**Important**: 
-- Use the **absolute path** to your `python` executable if you are using a virtual environment (e.g., `d:/.../.venv/Scripts/python.exe`).
-- Use the **absolute path** to the `main.py` script.
-- You can omit `env` in the JSON if you have the `.env` file correctly set up and being read, but passing the API key explicitly is safer.
+**Alternative (if project is already synced via `uv sync`)**:
+```json
+{
+  "mcpServers": {
+    "sms-ph": {
+      "command": "uv",
+      "args": [
+        "run",
+        "d:/User/path-to-your-mcp/mcp-ph-sms/main.py"
+      ],
+      "cwd": "d:/User/path-to-your-mcp/mcp-ph-sms",
+      "env": {
+        "SMS_API_KEY": "your_key_here"
+      }
+    }
+  }
+}
+```
+
+**Important**:
+- Ensure `uv` is in your system PATH.
+- `cwd` ensures `uv` picks up the `.env` and `pyproject.toml` from the correct directory.
+- You can omit `env` in the JSON if you have the `.env` file correctly set up.
 
 ## Features
 
