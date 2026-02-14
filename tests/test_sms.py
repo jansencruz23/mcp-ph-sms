@@ -1,6 +1,5 @@
 import unittest
-import asyncio
-from unittest.mock import MagicMock, AsyncMock, patch
+from unittest.mock import MagicMock, patch
 from src.utils import normalize_phone
 from src.services import SMSService
 

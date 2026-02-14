@@ -1,7 +1,5 @@
 import httpx
 import time
-import httpx
-import time
 import logging
 from threading import Lock
 from .config import get_settings

@@ -1,6 +1,6 @@
 import asyncio
 from src.services import SMSService
-from src.repository import ContactRepository, SMSRepository
+from src.repository import ContactRepository
 from src.database import init_db
 
 
