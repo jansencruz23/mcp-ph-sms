@@ -1,7 +1,17 @@
 [project]
 name = "mcp-ph-sms"
-version = "0.1.0"
-description = "Add your description here"
+dynamic = ["version"]
+description = "A Model Context Protocol (MCP) server for sending SMS via free Philippines APIs and managing local contacts."
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
