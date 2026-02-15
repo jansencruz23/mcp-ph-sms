@@ -81,7 +81,7 @@ To use this server with Claude Desktop, add the following to your config file:
 {
   "mcpServers": {
     "sms-ph": {
-      "command": "uv",
+      "command": "d:/User/path-to-your-mcp/mcp-ph-sms/.venv/Scripts/python.exe",
       "args": [
         "run",
         "d:/User/path-to-your-mcp/mcp-ph-sms/main.py"
@@ -100,8 +100,27 @@ To use this server with Claude Desktop, add the following to your config file:
 - `cwd` ensures `uv` picks up the `.env` and `pyproject.toml` from the correct directory.
 - You can omit `env` in the JSON if you have the `.env` file correctly set up.
 
-## Features
+## Available Tools
 
-- **Contacts**: Create, List, Update, Delete contacts with tags and notes.
-- **SMS**: Send messages (throttled to 1 per 10s), view history.
-- **Tools**: `contacts.list`, `contacts.create`, `sms.send`, etc.
+### Contacts
+- **`contacts_list`**: List contacts with filtering options.
+  - Arguments: `limit` (default: 50), `tag` (optional), `q` (search query).
+- **`contacts_get`**: Get a specific contact by ID.
+  - Arguments: `contact_id`.
+- **`contacts_create`**: Create a new contact.
+  - Arguments: `name`, `phone`, `tags` (optional list), `notes` (optional).
+- **`contacts_update`**: Update an existing contact.
+  - Arguments: `contact_id`, and any of `name`, `phone`, `tags`, `notes`.
+- **`contacts_delete`**: Delete a contact by ID.
+  - Arguments: `contact_id`.
+
+### SMS
+- **`sms_send`**: Send an SMS message.
+  - Arguments: `recipient` (phone number or name), `message`, `dry_run` (boolean, default: False).
+  - *Note: Throttled to 1 message per 10 seconds.*
+- **`sms_history`**: View SMS sending history.
+  - Arguments: `limit` (default: 20), `contact_id` (optional filter).
+
+### Prompts
+- **`compose_sms`**: Helper prompt to draft an SMS based on a topic.
+
