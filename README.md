@@ -12,6 +12,9 @@ A Model Context Protocol (MCP) server that provides SMS capabilities (via a free
     uv pip install mcp[cli] httpx pydantic pydantic-settings python-dotenv sqlmodel
     ```
 3.  **Configure Environment**:
+    
+    Obtain your API key from [https://sms-api-ph.netlify.app](https://sms-api-ph.netlify.app).
+    
     Create a `.env` file in the root directory:
     ```env
     SMS_API_KEY=your_actual_api_key_here
